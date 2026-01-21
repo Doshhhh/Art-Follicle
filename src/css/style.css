@@ -313,6 +313,7 @@ a {
 
 .hero__typed {
   color: var(--primary-color);
+  font-size: 0.8em;
 }
 
 .hero__typed::after {
