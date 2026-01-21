@@ -163,7 +163,7 @@
   };
 
   /* ====== Form Validation Helpers ====== */
-  const isValidName = (value) => /^[A-Za-zА-Яа-яЁё\s-]{2,}$/.test(value.trim());
+  const isValidName = (value) => /^[A-Za-zА-Яа-яЁё\u4e00-\u9fff\s-]{2,}$/.test(value.trim());
   
   const isValidPhone = (value, input) => {
     // If intl-tel-input exists, use its validation
