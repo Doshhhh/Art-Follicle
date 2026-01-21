@@ -913,4 +913,14 @@
       phone.iti = iti;
     }
   });
+
+  // Initialize intl-tel-input for calculator form phone field
+  const calcPhone = document.querySelector(".calculator-form__contacts input[type='tel']");
+  if (calcPhone && window.intlTelInput) {
+    const iti = window.intlTelInput(calcPhone, {
+      ...intlTelConfig,
+      initialCountry: "us",
+    });
+    calcPhone.iti = iti;
+  }
 })();

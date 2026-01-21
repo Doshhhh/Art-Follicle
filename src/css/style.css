@@ -622,7 +622,6 @@ a {
 .calculator-form {
   padding: 0;
   background: #ffffff;
-  overflow-x: hidden;
 }
 
 .calculator-form__body {
@@ -1547,11 +1546,16 @@ a {
   margin-right: 12px;
 }
 
+.iti {
+  width: 100%;
+}
+
 .iti__dropdown-content {
   border-radius: 12px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   border: 1px solid #e8e8f2;
-  z-index: 100;
+  z-index: 9999 !important;
+  position: fixed !important;
 }
 
 .iti__search-input {
