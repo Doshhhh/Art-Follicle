@@ -259,9 +259,15 @@ a {
 
 .hero__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
+  grid-template-columns: 2fr 1fr;
+  gap: 60px;
   align-items: center;
+}
+
+@media (max-width: 900px) {
+  .hero__grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .hero__title {
@@ -280,16 +286,14 @@ a {
 
 .hero__typed {
   color: var(--primary-color);
-  position: relative;
 }
 
 .hero__typed::after {
   content: "|";
-  position: absolute;
-  right: -12px;
   color: var(--primary-color);
   animation: blink 0.7s infinite;
   font-weight: 300;
+  margin-left: 2px;
 }
 
 @keyframes blink {
@@ -344,7 +348,7 @@ a {
 }
 
 .hero__image {
-  max-width: 560px;
+  max-width: 480px;
   width: 100%;
   height: auto;
 }

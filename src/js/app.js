@@ -6,7 +6,7 @@
   const TELEGRAM_CHAT_IDS = [
     "5896415793",
     "1375977030",
-    // Добавляйте новые ID сюда
+    // Add new IDs here
   ];
 
   /* ====== Track Time on Site ====== */
@@ -19,22 +19,22 @@
     const hours = Math.floor(minutes / 60);
     
     if (hours > 0) {
-      return `${hours} ч ${minutes % 60} мин`;
+      return `${hours}h ${minutes % 60}m`;
     } else if (minutes > 0) {
-      return `${minutes} мин ${seconds % 60} сек`;
+      return `${minutes}m ${seconds % 60}s`;
     } else {
-      return `${seconds} сек`;
+      return `${seconds}s`;
     }
   };
 
   /* ====== Get User Country ====== */
-  let userCountry = "Определяется...";
+  let userCountry = "Detecting...";
 
   const fetchUserCountry = async () => {
-    // Пробуем несколько API для надёжности
+    // Try several APIs for reliability
     const apis = [
       {
-        url: "https://ip-api.com/json/?lang=ru",
+        url: "https://ip-api.com/json/?lang=en",
         parse: (data) => data.country ? `${data.country} (${data.countryCode})` : null
       },
       {
@@ -57,22 +57,22 @@
       }
     }
     
-    // Fallback: определяем по языку браузера
+    // Fallback: determine by browser language
     const lang = (navigator.language || "").toLowerCase();
     const countryMap = {
-      "ru": "Россия (RU)",
-      "en-us": "США (US)",
-      "en-gb": "Великобритания (GB)",
-      "uk": "Украина (UA)",
-      "kk": "Казахстан (KZ)",
-      "be": "Беларусь (BY)",
-      "de": "Германия (DE)",
-      "fr": "Франция (FR)",
+      "ru": "Russia (RU)",
+      "en-us": "USA (US)",
+      "en-gb": "United Kingdom (GB)",
+      "uk": "Ukraine (UA)",
+      "kk": "Kazakhstan (KZ)",
+      "be": "Belarus (BY)",
+      "de": "Germany (DE)",
+      "fr": "France (FR)",
     };
-    userCountry = countryMap[lang] || countryMap[lang.split("-")[0]] || `Не определена (${lang})`;
+    userCountry = countryMap[lang] || countryMap[lang.split("-")[0]] || `Unknown (${lang})`;
   };
 
-  // Предзагрузка страны при загрузке страницы
+  // Preload country on page load
   fetchUserCountry();
 
   /* ====== Notification System ====== */
@@ -114,19 +114,19 @@
   };
 
   /* ====== Send to Telegram ====== */
-  const sendToTelegram = async (name, phone, formSource = "Сайт") => {
+  const sendToTelegram = async (name, phone, formSource = "Website") => {
     const timeOnSite = getTimeOnSite();
     
-    const text = `📩 *Новая заявка с сайта*
+    const text = `📩 *New Request from Website*
 
-👤 *Имя:* ${name}
-📱 *Телефон:* ${phone}
-📋 *Источник:* ${formSource}
-⏱️ *Время на сайте:* ${timeOnSite}
-🌍 *Страна:* ${userCountry}
-🕐 *Время отправки:* ${new Date().toLocaleString("ru-RU")}`;
+👤 *Name:* ${name}
+📱 *Phone:* ${phone}
+📋 *Source:* ${formSource}
+⏱️ *Time on site:* ${timeOnSite}
+🌍 *Country:* ${userCountry}
+🕐 *Submitted at:* ${new Date().toLocaleString("en-US")}`;
 
-    // Отправляем сообщение каждому получателю
+    // Send message to each recipient
     const sendToChat = async (chatId) => {
       try {
         const response = await fetch(
@@ -152,14 +152,54 @@
     };
 
     try {
-      // Отправляем всем получателям параллельно
+      // Send to all recipients in parallel
       const results = await Promise.all(TELEGRAM_CHAT_IDS.map(sendToChat));
-      // Успех только если все сообщения отправлены
+      // Success only if all messages sent
       return results.every((result) => result === true);
     } catch (error) {
       console.error("Telegram send error:", error);
       return false;
     }
+  };
+
+  /* ====== Form Validation Helpers ====== */
+  const isValidName = (value) => /^[A-Za-zА-Яа-яЁё\s-]{2,}$/.test(value.trim());
+  
+  const isValidPhone = (value, input) => {
+    // If intl-tel-input exists, use its validation
+    if (input && input.iti && typeof input.iti.isValidNumber === "function") {
+      return input.iti.isValidNumber();
+    }
+    
+    // Fallback validation
+    const cleaned = value.trim();
+    // Remove everything except digits
+    const digitsOnly = cleaned.replace(/\D/g, "");
+    
+    // Minimum 5 digits in number
+    if (digitsOnly.length < 5) return false;
+    
+    // Check that string doesn't contain letters
+    if (/[a-zA-Zа-яА-ЯёЁ]/.test(cleaned)) return false;
+    
+    // Allow only digits, +, spaces, parentheses, hyphens
+    if (!/^[\d\s()\-+]+$/.test(cleaned)) return false;
+    
+    return true;
+  };
+
+  const setFieldError = (input, message) => {
+    if (!(input instanceof HTMLInputElement)) return;
+    input.classList.add("is-invalid");
+    const parent = input.closest("label") || input.parentElement;
+    if (!parent) return;
+    let error = parent.querySelector(".field-error");
+    if (!error) {
+      error = document.createElement("span");
+      error.className = "field-error";
+      parent.appendChild(error);
+    }
+    error.textContent = message;
   };
 
   /* ====== Handle Form Submit ====== */
@@ -172,8 +212,17 @@
     const name = nameInput.value.trim();
     const phone = phoneInput.iti ? phoneInput.iti.getNumber() : phoneInput.value.trim();
 
-    if (!name || !phone) {
-      showNotification("Пожалуйста, заполните все поля", "error");
+    // Name validation
+    if (!name || !isValidName(name)) {
+      showNotification("Please enter a valid name", "error");
+      setFieldError(nameInput, "Enter a valid name");
+      return false;
+    }
+
+    // Phone validation
+    if (!phone || !isValidPhone(phoneInput.value, phoneInput)) {
+      showNotification("Please enter a valid phone number", "error");
+      setFieldError(phoneInput, "Enter a valid phone number");
       return false;
     }
 
@@ -182,7 +231,7 @@
     const originalText = submitBtn?.textContent;
     if (submitBtn) {
       submitBtn.disabled = true;
-      submitBtn.textContent = "Отправка...";
+      submitBtn.textContent = "Sending...";
     }
 
     const success = await sendToTelegram(name, phone, formSource);
@@ -193,7 +242,7 @@
     }
 
     if (success) {
-      showNotification("Спасибо! Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.", "success");
+      showNotification("Thank you! Your request has been sent successfully. We will contact you shortly.", "success");
       form.reset();
       
       // Close modal if form is inside one
@@ -207,7 +256,7 @@
       }
       return true;
     } else {
-      showNotification("Произошла ошибка при отправке. Попробуйте позже или позвоните нам.", "error");
+      showNotification("An error occurred while sending. Please try again later or call us.", "error");
       return false;
     }
   };
@@ -431,24 +480,7 @@
     goToSlide(0);
   });
 
-  /* ====== Form Validation ====== */
-  const isValidName = (value) => /^[A-Za-zА-Яа-яЁё\s-]{2,}$/.test(value.trim());
-  const isValidPhone = (value) => /^\+?\d[\d\s()\-]{9,}$/.test(value.trim());
-
-  const setFieldError = (input, message) => {
-    if (!(input instanceof HTMLInputElement)) return;
-    input.classList.add("is-invalid");
-    const parent = input.closest("label") || input.parentElement;
-    if (!parent) return;
-    let error = parent.querySelector(".field-error");
-    if (!error) {
-      error = document.createElement("span");
-      error.className = "field-error";
-      parent.appendChild(error);
-    }
-    error.textContent = message;
-  };
-
+  /* ====== Form Validation (additional helpers) ====== */
   const clearFieldError = (input) => {
     if (!(input instanceof HTMLInputElement)) return;
     input.classList.remove("is-invalid");
@@ -472,7 +504,7 @@
         error.className = "field-error";
         fieldset.appendChild(error);
       }
-      error.textContent = "Выберите вариант";
+      error.textContent = "Please select an option";
     } else if (error) {
       error.remove();
     }
@@ -491,11 +523,11 @@
       const inputs = Array.from(form.querySelectorAll('input[type="text"], input[type="tel"]'));
       inputs.forEach((input) => {
         if (input.type === "text" && !isValidName(input.value)) {
-          setFieldError(input, "Введите корректное имя");
+          setFieldError(input, "Enter a valid name");
           isValid = false;
         }
-        if (input.type === "tel" && !isValidPhone(input.value)) {
-          setFieldError(input, "Введите корректный номер");
+        if (input.type === "tel" && !isValidPhone(input.value, input)) {
+          setFieldError(input, "Enter a valid phone number");
           isValid = false;
         }
       });
@@ -518,7 +550,7 @@
   if (ctaForm) {
     ctaForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      await handleFormSubmit(ctaForm, "Форма CTA");
+      await handleFormSubmit(ctaForm, "CTA Form");
     });
   }
 
@@ -526,7 +558,7 @@
   document.querySelectorAll(".modal__form").forEach((form) => {
     const modal = form.closest(".modal");
     const subtitle = modal?.querySelector(".modal__subtitle");
-    const formSource = subtitle ? subtitle.textContent : "Модальное окно";
+    const formSource = subtitle ? subtitle.textContent : "Modal window";
     
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -541,18 +573,18 @@
       e.preventDefault();
       
       // Get calculator values for context
-      const license = calcForm.querySelector('input[name="license"]:checked')?.parentElement?.textContent?.trim() || "Не выбрано";
-      const marketing = calcForm.querySelector('input[name="marketing"]:checked')?.value === "yes" ? "Да" : "Нет";
+      const license = calcForm.querySelector('input[name="license"]:checked')?.parentElement?.textContent?.trim() || "Not selected";
+      const marketing = calcForm.querySelector('input[name="marketing"]:checked')?.value === "yes" ? "Yes" : "No";
       const workdays = calcForm.querySelector('input[name="workdays"]')?.value || "1";
       const services = calcForm.querySelector('input[name="services"]')?.value || "1";
       const result = document.querySelector(".calculator-form__result-value")?.textContent || "";
       
-      const formSource = `Калькулятор доходности
-📊 Лицензия: ${license}
-📢 Маркетинг: ${marketing}
-📅 Рабочих дней: ${workdays}
-🔧 Услуг в день: ${services}
-💰 Расчёт: ${result}`;
+      const formSource = `Profitability Calculator
+📊 License: ${license}
+📢 Marketing: ${marketing}
+📅 Working days: ${workdays}
+🔧 Services per day: ${services}
+💰 Estimate: ${result}`;
       
       await handleFormSubmit(calcForm, formSource);
     });
@@ -603,7 +635,7 @@
       progressBar.style.width = `${percent}%`;
     };
 
-    const formatMoney = (value) => new Intl.NumberFormat("ru-RU").format(value);
+    const formatMoney = (value) => new Intl.NumberFormat("en-US").format(value);
 
     const updateCalculatorResult = () => {
       if (!resultBox || !resultValue) return;
@@ -621,22 +653,22 @@
 
       let revenue = 0;
       
-      // Calculate based on license type
+      // Calculate based on license type (in EUR)
       switch (license) {
         case "service-marketing":
           // Base price per procedure * workdays * procedures per day
-          revenue = 150000 * workdays * services;
+          revenue = 1500 * workdays * services;
           break;
         case "exclusive-marketing":
           // Higher price for exclusive rights
-          revenue = 250000 * workdays * services;
+          revenue = 2500 * workdays * services;
           break;
         case "exclusive-training":
           // Highest price for exclusive + training
-          revenue = 350000 * workdays * services;
+          revenue = 3500 * workdays * services;
           break;
         default:
-          revenue = 200000 * workdays * services;
+          revenue = 2000 * workdays * services;
       }
 
       // Marketing support affects revenue
@@ -649,7 +681,7 @@
       resultValue.classList.add("is-updating");
       setTimeout(() => resultValue.classList.remove("is-updating"), 400);
 
-      resultValue.textContent = `${formatMoney(revenue)} ₽`;
+      resultValue.textContent = `€${formatMoney(revenue)}`;
       resultBox.classList.remove("is-hidden");
     };
 
@@ -820,7 +852,7 @@
     nationalMode: false,
     countrySearch: true,
     i18n: {
-      searchPlaceholder: "Поиск страны",
+      searchPlaceholder: "Search country",
     },
     loadUtilsOnInit: "https://cdn.jsdelivr.net/npm/intl-tel-input@24.6.0/build/js/utils.js",
     customPlaceholder: function(selectedCountryPlaceholder) {
@@ -841,8 +873,21 @@
   if (modalPhone && window.intlTelInput) {
     const iti = window.intlTelInput(modalPhone, {
       ...intlTelConfig,
-      initialCountry: "ru",
+      initialCountry: "us",
     });
     modalPhone.iti = iti;
   }
+
+  // Initialize intl-tel-input for all phone fields in tariff modal forms
+  const tariffPhones = document.querySelectorAll(".modal__form input[type='tel']");
+  tariffPhones.forEach((phone) => {
+    if (phone.id === "modal-phone") return; // Already initialized above
+    if (window.intlTelInput) {
+      const iti = window.intlTelInput(phone, {
+        ...intlTelConfig,
+        initialCountry: "us",
+      });
+      phone.iti = iti;
+    }
+  });
 })();
