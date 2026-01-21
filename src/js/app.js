@@ -475,6 +475,29 @@
       goToSlide(currentIndex + 1, true);
     });
 
+    // Touch/swipe support
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    slider.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    slider.addEventListener("touchend", (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const diff = touchStartX - touchEndX;
+      
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) {
+          // Swipe left - next slide
+          goToSlide(currentIndex + 1, true);
+        } else {
+          // Swipe right - previous slide
+          goToSlide(currentIndex - 1, false);
+        }
+      }
+    }, { passive: true });
+
     // Initialize
     track.style.transition = "transform 0.4s ease";
     goToSlide(0);
