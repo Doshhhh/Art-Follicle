@@ -115,13 +115,17 @@
   };
 
   /* ====== Send to Telegram ====== */
-  const sendToTelegram = async (name, phone, formSource = "Website") => {
+  const sendToTelegram = async (name, phone, formSource = "Website", telegram = "", instagram = "") => {
     const timeOnSite = getTimeOnSite();
+    
+    let socialInfo = "";
+    if (telegram) socialInfo += `\n✈️ *Telegram:* ${telegram}`;
+    if (instagram) socialInfo += `\n📷 *Instagram:* ${instagram}`;
     
     const text = `📩 *New Request from Website*
 
 👤 *Name:* ${name}
-📱 *Phone:* ${phone}
+📱 *Phone:* ${phone}${socialInfo}
 📋 *Source:* ${formSource}
 ⏱️ *Time on site:* ${timeOnSite}
 🌍 *Country:* ${userCountry}
@@ -207,11 +211,15 @@
   const handleFormSubmit = async (form, formSource) => {
     const nameInput = form.querySelector('input[name="name"]');
     const phoneInput = form.querySelector('input[name="phone"]');
+    const telegramInput = form.querySelector('input[name="telegram"]');
+    const instagramInput = form.querySelector('input[name="instagram"]');
 
     if (!nameInput || !phoneInput) return false;
 
     const name = nameInput.value.trim();
     const phone = phoneInput.iti ? phoneInput.iti.getNumber() : phoneInput.value.trim();
+    const telegram = telegramInput ? telegramInput.value.trim() : "";
+    const instagram = instagramInput ? instagramInput.value.trim() : "";
 
     // Name validation
     if (!name || !isValidName(name)) {
@@ -235,7 +243,7 @@
       submitBtn.textContent = "Sending...";
     }
 
-    const success = await sendToTelegram(name, phone, formSource);
+    const success = await sendToTelegram(name, phone, formSource, telegram, instagram);
 
     if (submitBtn) {
       submitBtn.disabled = false;

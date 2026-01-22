@@ -313,7 +313,7 @@ a {
 
 .hero__typed {
   color: var(--primary-color);
-  font-size: 0.8em;
+  font-size: 1.2em;
 }
 
 .hero__typed::after {
@@ -350,25 +350,6 @@ a {
   font-weight: 700;
 }
 
-.hero__price {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.hero__price-label {
-  font-size: 18px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--muted-color);
-}
-
-.hero__price-value {
-  font-size: 36px;
-  font-weight: 800;
-  color: var(--text-color);
-}
 
 .hero__media {
   display: flex;
@@ -1095,6 +1076,12 @@ a {
   color: var(--muted-color);
 }
 
+.input-field small {
+  font-size: 12px;
+  color: #999;
+  font-weight: 400;
+}
+
 .input-field span {
   font-size: 15px;
   font-weight: 600;
@@ -1356,15 +1343,31 @@ a {
 
 .technology__grid {
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 60px;
+  grid-template-columns: 1fr 0.5fr auto auto;
+  gap: 20px;
   align-items: center;
 }
 
 .technology__slider-wrapper {
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 16px;
+}
+
+.technology__slider-main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.technology__work-examples-label {
+  font-size: 14px;
+  color: var(--muted-color);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  margin: 0;
 }
 
 .technology__title {
@@ -1787,30 +1790,6 @@ a {
   padding-top: 16px;
 }
 
-.tariff-card__price-block {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 2px;
-}
-
-.tariff-card__price-label {
-  font-size: 14px;
-  color: var(--muted-color);
-}
-
-.tariff-card__price {
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.old-price {
-  font-size: 14px;
-  color: #9a9aa8;
-  text-decoration: line-through;
-  font-weight: 400;
-}
 
 .button--outline {
   background: transparent;

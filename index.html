@@ -51,7 +51,8 @@
         <div class="container hero__grid">
           <div class="hero__content">
             <h1 class="hero__title">
-              Start a business with patented method of<span class="hero__title-mark">®</span> <span class="hero__typed" data-words="hair,eyelash,eyebrow">hair</span>
+              Start a business with patented method of<span class="hero__title-mark">®</span>
+              <br><span class="hero__typed" data-words="hair,eyelash,eyebrow">hair</span>
               <br>transplantation technology "Ecological transplant hair AF"
             </h1>
             <p class="hero__subtitle">
@@ -59,10 +60,6 @@
             </p>
             <div class="hero__actions">
               <a class="button button--primary hero__cta" href="#tarifs">Choose License</a>
-              <div class="hero__price">
-                <span class="hero__price-label">Starting from</span>
-                <span class="hero__price-value">€23,500</span>
-              </div>
             </div>
           </div>
           <div class="hero__media">
@@ -242,6 +239,14 @@
                 <span>Phone number</span>
                 <input type="tel" name="phone" placeholder="+1 (000) 000-0000" />
               </label>
+              <label class="input-field">
+                <span>Telegram <small>(optional)</small></span>
+                <input type="text" name="telegram" placeholder="@username" />
+              </label>
+              <label class="input-field">
+                <span>Instagram <small>(optional)</small></span>
+                <input type="text" name="instagram" placeholder="@username" />
+              </label>
             </fieldset>
             <div class="calculator-form__actions is-hidden">
               <button class="button button--ghost" type="button" data-step-prev>Back</button>
@@ -268,43 +273,72 @@
             </ul>
           </div>
           <div class="technology__slider-wrapper">
-            <button class="slider__btn slider__btn--prev" type="button" aria-label="Previous">‹</button>
-            <div class="slider">
-              <div class="slider__track technology__gallery">
-                <video class="technology__video" controls preload="none" poster="assets/images/tild6563-6439-4139-a436-646465646138_____1.jpg">
-                  <source src="assets/media/vide3861-6135-4361-b534-666530346331__clinic_eyebrowtransp.mp4" type="video/mp4" />
-                </video>
-                <video class="technology__video" controls preload="none" poster="assets/images/tild6462-6135-4066-b232-643438346263_____2.jpg">
-                  <source src="assets/media/vide6664-3032-4230-a261-343264313231__clinic_eyebrowtransp.mp4" type="video/mp4" />
-                </video>
-                <img
-                  src="assets/images/пример работ 1.jpg"
-                  alt="Work example 1"
-                  loading="lazy"
-                />
-                <img
-                  src="assets/images/пример работ 2.jpg"
-                  alt="Work example 2"
-                  loading="lazy"
-                />
-                <img
-                  src="assets/images/пример работ 3.jpg"
-                  alt="Work example 3"
-                  loading="lazy"
-                />
-                <img
-                  src="assets/images/пример работ 4.jpg"
-                  alt="Work example 4"
-                  loading="lazy"
-                />
-                <img
-                  src="assets/images/пример работ 5.jpg"
-                  alt="Work example 5"
-                  loading="lazy"
-                />
+            <div class="technology__slider-main">
+              <button class="slider__btn slider__btn--prev" type="button" aria-label="Previous">‹</button>
+              <div class="slider">
+                <div class="slider__track technology__gallery">
+                  <video class="technology__video" controls preload="none" poster="assets/images/tild6563-6439-4139-a436-646465646138_____1.jpg">
+                    <source src="assets/media/vide3861-6135-4361-b534-666530346331__clinic_eyebrowtransp.mp4" type="video/mp4" />
+                  </video>
+                  <video class="technology__video" controls preload="none" poster="assets/images/tild6462-6135-4066-b232-643438346263_____2.jpg">
+                    <source src="assets/media/vide6664-3032-4230-a261-343264313231__clinic_eyebrowtransp.mp4" type="video/mp4" />
+                  </video>
+                  <img
+                    src="assets/images/пример работ 1.jpg"
+                    alt="Work example 1"
+                    loading="lazy"
+                  />
+                  <img
+                    src="assets/images/пример работ 2.jpg"
+                    alt="Work example 2"
+                    loading="lazy"
+                  />
+                  <img
+                    src="assets/images/пример работ 3.jpg"
+                    alt="Work example 3"
+                    loading="lazy"
+                  />
+                  <img
+                    src="assets/images/пример работ 4.jpg"
+                    alt="Work example 4"
+                    loading="lazy"
+                  />
+                  <img
+                    src="assets/images/пример работ 5.jpg"
+                    alt="Work example 5"
+                    loading="lazy"
+                  />
+                </div>
               </div>
+              <button class="slider__btn slider__btn--next" type="button" aria-label="Next">›</button>
             </div>
-            <button class="slider__btn slider__btn--next" type="button" aria-label="Next">›</button>
+            <p class="technology__work-examples-label">Work Examples</p>
+          </div>
+          <div class="technology__slider-wrapper">
+            <div class="technology__slider-main">
+              <button class="slider__btn slider__btn--prev" type="button" aria-label="Previous">‹</button>
+              <div class="slider">
+                <div class="slider__track technology__gallery">
+                  <img
+                    src="assets/images/другие 1.jpg"
+                    alt="Other example 1"
+                    loading="lazy"
+                  />
+                  <img
+                    src="assets/images/другие 2.jpg"
+                    alt="Other example 2"
+                    loading="lazy"
+                  />
+                  <img
+                    src="assets/images/другие 3.jpg"
+                    alt="Other example 3"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+              <button class="slider__btn slider__btn--next" type="button" aria-label="Next">›</button>
+            </div>
+            <p class="technology__work-examples-label">Examples of other methods</p>
           </div>
         </div>
       </section>
@@ -316,6 +350,8 @@
             <form class="cta-section__form">
               <input type="text" name="name" placeholder="Name" />
               <input type="tel" id="cta-phone" name="phone" />
+              <input type="text" name="telegram" placeholder="Telegram (optional)" />
+              <input type="text" name="instagram" placeholder="Instagram (optional)" />
               <button class="button button--primary" type="submit">Submit</button>
             </form>
           </div>
@@ -387,10 +423,6 @@
               </ul>
               <div class="tariff-card__footer">
                 <a class="button button--outline" href="#formpatenteconom">Submit Request</a>
-                <div class="tariff-card__price-block">
-                  <span class="tariff-card__price-label">Price</span>
-                  <span class="tariff-card__price">€35,200</span>
-                </div>
               </div>
             </article>
             <article class="tariff-card tariff-card--highlight reveal-item">
@@ -408,11 +440,6 @@
               </ul>
               <div class="tariff-card__footer">
                 <a class="button button--primary" href="#formpatentstandart">Submit Request</a>
-                <div class="tariff-card__price-block">
-                  <span class="tariff-card__price-label">Price</span>
-                  <span class="tariff-card__price">€28,600</span>
-                  <span class="old-price">€46,600</span>
-                </div>
               </div>
             </article>
             <article class="tariff-card reveal-item">
@@ -431,11 +458,6 @@
               </ul>
               <div class="tariff-card__footer">
                 <a class="button button--outline" href="#formpatenvip">Submit Request</a>
-                <div class="tariff-card__price-block">
-                  <span class="tariff-card__price-label">Price</span>
-                  <span class="tariff-card__price">€23,500</span>
-                  <span class="old-price">€51,200</span>
-                </div>
               </div>
             </article>
           </div>
@@ -449,7 +471,7 @@
               <p>Package offers are limited in time and include installment payment options.</p>
               <p>There are regional and city restrictions for the plans.</p>
               <p>
-                License purchase with <strong>exclusive rights</strong> for regional presence — from €99,000.
+                License purchase with <strong>exclusive rights</strong> for regional presence.
                 Contact our specialists for details.
               </p>
             </div>
@@ -490,6 +512,8 @@
         <form class="modal__form">
           <input type="text" name="name" placeholder="Name" />
           <input type="tel" id="modal-phone" name="phone" />
+          <input type="text" name="telegram" placeholder="Telegram (optional)" />
+          <input type="text" name="instagram" placeholder="Instagram (optional)" />
           <button class="button button--primary" type="submit">Submit</button>
         </form>
       </div>
@@ -510,6 +534,14 @@
           <label class="input-field">
             <span>Phone number</span>
             <input type="tel" name="phone" placeholder="+1 (000) 000-0000" />
+          </label>
+          <label class="input-field">
+            <span>Telegram <small>(optional)</small></span>
+            <input type="text" name="telegram" placeholder="@username" />
+          </label>
+          <label class="input-field">
+            <span>Instagram <small>(optional)</small></span>
+            <input type="text" name="instagram" placeholder="@username" />
           </label>
           <button class="button button--primary" type="submit">Submit</button>
         </form>
@@ -532,6 +564,14 @@
             <span>Phone number</span>
             <input type="tel" name="phone" placeholder="+1 (000) 000-0000" />
           </label>
+          <label class="input-field">
+            <span>Telegram <small>(optional)</small></span>
+            <input type="text" name="telegram" placeholder="@username" />
+          </label>
+          <label class="input-field">
+            <span>Instagram <small>(optional)</small></span>
+            <input type="text" name="instagram" placeholder="@username" />
+          </label>
           <button class="button button--primary" type="submit">Submit</button>
         </form>
       </div>
@@ -552,6 +592,14 @@
           <label class="input-field">
             <span>Phone number</span>
             <input type="tel" name="phone" placeholder="+1 (000) 000-0000" />
+          </label>
+          <label class="input-field">
+            <span>Telegram <small>(optional)</small></span>
+            <input type="text" name="telegram" placeholder="@username" />
+          </label>
+          <label class="input-field">
+            <span>Instagram <small>(optional)</small></span>
+            <input type="text" name="instagram" placeholder="@username" />
           </label>
           <button class="button button--primary" type="submit">Submit</button>
         </form>
