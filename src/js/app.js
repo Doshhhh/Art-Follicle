@@ -6,6 +6,7 @@
   const TELEGRAM_CHAT_IDS = [
     "5896415793",
     "1375977030",
+    "1774211685",
     // Add new IDs here
   ];
 
