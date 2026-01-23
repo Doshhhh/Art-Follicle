@@ -1426,6 +1426,10 @@ a {
   object-fit: cover;
 }
 
+.move-left {
+  transform: translateX(-8px);
+}
+
 /* Slider */
 .slider {
   position: relative;
