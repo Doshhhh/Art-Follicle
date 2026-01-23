@@ -1343,9 +1343,17 @@ a {
 
 .technology__grid {
   display: grid;
-  grid-template-columns: 1fr 0.5fr auto auto;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto;
+  gap: 40px;
+  align-items: start;
+}
+
+.technology__sliders-wrapper {
+  display: flex;
   gap: 20px;
-  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .technology__slider-wrapper {
@@ -1368,6 +1376,16 @@ a {
   letter-spacing: 0.1em;
   font-weight: 600;
   margin: 0;
+}
+
+.technology__af-label {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-left: 8px;
+  vertical-align: middle;
+  display: inline-block;
+  line-height: 1;
 }
 
 .technology__title {
