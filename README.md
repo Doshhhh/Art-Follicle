@@ -1,8 +1,8 @@
-# Чистая версия сайта
+# Clean version of the site
 
-Это реорганизованная версия проекта Tilda с разделенными HTML, CSS и JS файлами.
+This is a reorganized version of the Tilda project with separated HTML, CSS, and JS files.
 
-## Структура проекта
+## Project structure
 
 ```
 website_clean/
@@ -10,73 +10,73 @@ website_clean/
 ├── assets/                    # Все статические ресурсы
 │   ├── css/
 │   │   ├── app/
-│   │   │   └── site.css        # Основные стили проекта
-│   │   └── vendor/             # Библиотеки Tilda (min.css)
+│   │   │   └── site.css        # Main project styles
+│   │   └── vendor/             # Tilda libraries (min.css)
 │   ├── js/
 │   │   ├── app/
-│   │   │   └── site.js         # Основные скрипты проекта
-│   │   └── vendor/             # Библиотеки Tilda (min.js)
-│   ├── images/                # Все изображения
-│   └── media/                 # Видео/медиа
-├── robots.txt                 # Файл для поисковых роботов
-├── sitemap.xml                # Карта сайта
-├── 404.html                   # Страница ошибки 404
-└── trash/                     # Архив удаленных/лишних файлов
+│   │   │   └── site.js         # Main project scripts
+│   │   └── vendor/             # Tilda libraries (min.js)
+│   ├── images/                # All images
+│   └── media/                 # Video/media
+├── robots.txt                 # File for search robots
+├── sitemap.xml                # Sitemap
+├── 404.html                   # 404 error page
+└── trash/                     # Archive of deleted/unnecessary files
 ```
 
-## Что было сделано
+## What was done
 
-1. ✅ Все встроенные `<style>` теги извлечены в отдельные CSS файлы
-2. ✅ Все встроенные `<script>` теги извлечены в отдельные JS файлы
-3. ✅ Все извлеченные файлы объединены в `assets/css/app/site.css` и `assets/js/app/site.js`
-4. ✅ HTML файл обновлен для использования объединенных файлов
-5. ✅ Существующие CSS и JS файлы скопированы
-6. ✅ Все изображения скопированы
-7. ✅ HTML файл очищен и стал читаемым
-8. ✅ Все пути к ресурсам сохранены корректно
+1. ✅ All inline `<style>` tags extracted into separate CSS files
+2. ✅ All inline `<script>` tags extracted into separate JS files
+3. ✅ All extracted files merged into `assets/css/app/site.css` and `assets/js/app/site.js`
+4. ✅ HTML file updated to use merged files
+5. ✅ Existing CSS and JS files copied
+6. ✅ All images copied
+7. ✅ HTML file cleaned and made readable
+8. ✅ All resource paths preserved correctly
 
-## Как работать с проектом
+## How to work with the project
 
-### Открыть сайт локально
-Просто откройте `index.html` в браузере или запустите локальный сервер:
+### Open the site locally
+Simply open `index.html` in a browser or start a local server:
 
 ```bash
 # Python 3
 python -m http.server 8000
 
-# Node.js (если установлен http-server)
+# Node.js (if http-server is installed)
 npx http-server
 
 # PHP
 php -S localhost:8000
 ```
 
-Затем откройте в браузере: `http://localhost:8000`
+Then open in browser: `http://localhost:8000`
 
-### Редактирование
+### Editing
 
-- **HTML**: Редактируйте `index.html`
-- **CSS**: Редактируйте `assets/css/app/site.css` (основной файл)
-  - `assets/css/vendor/` — библиотеки Tilda (лучше не трогать)
-- **JavaScript**: Редактируйте `assets/js/app/site.js` (основной файл)
-  - `assets/js/vendor/` — библиотеки Tilda (лучше не трогать)
+- **HTML**: Edit `index.html`
+- **CSS**: Edit `assets/css/app/site.css` (main file)
+  - `assets/css/vendor/` — Tilda libraries (better not to touch)
+- **JavaScript**: Edit `assets/js/app/site.js` (main file)
+  - `assets/js/vendor/` — Tilda libraries (better not to touch)
 
-### Рекомендации
+### Recommendations
 
-1. **Удаленные/лишние файлы** перенесены в `trash/` на случай отката.
+1. **Deleted/unnecessary files** moved to `trash/` for rollback.
 
-2. **Добавьте свои файлы**:
-   - Создайте `assets/css/app/main.css` для дополнительных стилей
-   - Создайте `assets/js/app/main.js` для дополнительных скриптов
-   - Подключите их в `index.html` после `assets/css/app/site.css` и `assets/js/app/site.js`
+2. **Add your own files**:
+   - Create `assets/css/app/main.css` for additional styles
+   - Create `assets/js/app/main.js` for additional scripts
+   - Connect them in `index.html` after `assets/css/app/site.css` and `assets/js/app/site.js`
 
-3. **Не редактируйте минифицированные файлы Tilda** — они перезапишутся при экспорте
+3. **Do not edit minified Tilda files** — they will be overwritten on export
 
-4. **Работайте с `site.css` и `site.js`** — это основные файлы для кастомизации
+4. **Work with `site.css` and `site.js`** — these are the main files for customization
 
-## Примечания
+## Notes
 
-- Все файлы сохранены в кодировке UTF-8
-- Внешние скрипты (с `src=`) остались подключенными как есть
-- Структура HTML сохранена, только убраны встроенные стили и скрипты
+- All files saved in UTF-8 encoding
+- External scripts (with `src=`) remained connected as is
+- HTML structure preserved, only inline styles and scripts removed
 
