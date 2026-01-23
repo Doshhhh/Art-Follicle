@@ -1,6 +1,93 @@
 (() => {
   const body = document.body;
 
+  /* ====== Theme Switcher ====== */
+  const themeToggle = document.querySelector(".theme-toggle");
+  const themeToggleMobile = document.querySelector(".theme-toggle--mobile");
+  const html = document.documentElement;
+
+  // Check for saved theme preference or default to system preference
+  const getPreferredTheme = () => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      return savedTheme;
+    }
+    // Check system preference
+    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      return "dark";
+    }
+    return "light";
+  };
+
+  // Apply theme to document
+  const applyTheme = (theme) => {
+    if (theme === "dark") {
+      html.setAttribute("data-theme", "dark");
+    } else {
+      html.removeAttribute("data-theme");
+    }
+    // Update icon visibility
+    updateThemeIcons(theme);
+  };
+
+  // Update theme icons visibility
+  const updateThemeIcons = (theme) => {
+    const sunIcons = document.querySelectorAll(".theme-icon--sun");
+    const moonIcons = document.querySelectorAll(".theme-icon--moon");
+    
+    sunIcons.forEach(icon => {
+      icon.style.opacity = theme === "light" ? "1" : "0";
+      icon.style.transform = theme === "light" ? "scale(1)" : "scale(0.8)";
+    });
+    
+    moonIcons.forEach(icon => {
+      icon.style.opacity = theme === "dark" ? "1" : "0";
+      icon.style.transform = theme === "dark" ? "scale(1)" : "scale(0.8)";
+    });
+  };
+
+  // Toggle theme
+  const toggleTheme = () => {
+    const currentTheme = html.getAttribute("data-theme") === "dark" ? "dark" : "light";
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
+    
+    applyTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+    
+    // Show notification
+    const themeName = newTheme === "dark" ? "Dark" : "Light";
+    showNotification(`${themeName} mode enabled`, "success");
+  };
+
+  // Initialize theme on page load
+  const initTheme = () => {
+    const preferredTheme = getPreferredTheme();
+    applyTheme(preferredTheme);
+  };
+
+  // Add event listeners to theme toggle buttons
+  if (themeToggle) {
+    themeToggle.addEventListener("click", toggleTheme);
+  }
+  
+  if (themeToggleMobile) {
+    themeToggleMobile.addEventListener("click", toggleTheme);
+  }
+
+  // Listen for system theme changes
+  if (window.matchMedia) {
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+      // Only auto-switch if user hasn't manually set a preference
+      if (!localStorage.getItem("theme")) {
+        const newTheme = e.matches ? "dark" : "light";
+        applyTheme(newTheme);
+      }
+    });
+  }
+
+  // Initialize theme
+  initTheme();
+
   /* ====== Telegram Bot Config ====== */
   const TELEGRAM_BOT_TOKEN = "8038122192:AAGVtehjkv-lxOCkgNNZB5q8IwdLZpPj8EY";
   const TELEGRAM_CHAT_IDS = [
@@ -450,6 +537,14 @@
         }
       });
     };
+
+    // Add event listeners to make videos loop when they end
+    videos.forEach((video) => {
+      video.addEventListener("ended", () => {
+        video.currentTime = 0;
+        video.play().catch(() => {});
+      });
+    });
 
     const goToSlide = (index, autoPlayNext = false) => {
       const wasFirstVideoPlaying = currentIndex === 0 && videos[0] && isVideoPlaying(videos[0]);
