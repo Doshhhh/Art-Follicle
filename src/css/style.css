@@ -139,7 +139,7 @@ a {
 .primary-nav {
   display: flex;
   gap: 8px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   margin: 0 auto;
 }
 
@@ -148,7 +148,8 @@ a {
   font-weight: 600;
   color: var(--muted-color);
   padding: 10px 12px;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .nav__link:hover,
@@ -166,18 +167,22 @@ a {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  font-size: 18px;
-  font-weight: 600;
-  margin-right: 60px;
+  margin-right: 20px;
 }
 
 .contact-link {
-  color: var(--muted-color);
-  transition: color 0.2s ease;
+  color: var(--primary-color);
+  border: 1.5px solid var(--primary-color);
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .contact-link:hover {
-  color: var(--primary-color);
+  background: var(--primary-color);
+  color: #ffffff;
 }
 
 .button {
@@ -1466,6 +1471,34 @@ a {
 }
 
 /* Responsive */
+@media (max-width: 1300px) {
+  .header__contacts {
+    margin-right: 12px;
+    font-size: 16px;
+  }
+
+  .header__inner {
+    gap: 8px;
+  }
+
+  .primary-nav {
+    gap: 2px;
+  }
+
+  .nav__link {
+    padding: 10px 8px;
+    font-size: 16px;
+  }
+
+  .logo {
+    min-width: auto;
+  }
+
+  .logo__image {
+    width: 160px;
+  }
+}
+
 @media (max-width: 960px) {
   .primary-nav {
     display: none;
@@ -1671,10 +1704,36 @@ a {
   line-height: 1;
 }
 
-.technology__title {
-  margin: 0 0 18px;
-  font-size: clamp(28px, 3.5vw, 40px);
+.technology__header {
+  margin-bottom: 32px;
+}
+
+.technology__pretitle {
+  font-size: clamp(24px, 3vw, 36px);
   font-weight: 700;
+  color: var(--text-color);
+  margin-bottom: 8px;
+}
+
+.technology__title {
+  margin: 0 0 12px;
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 700;
+  color: var(--primary-color);
+  position: relative;
+  display: inline-block;
+  padding-bottom: 12px;
+  line-height: 1.1;
+}
+
+.technology__title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--primary-color);
 }
 
 .technology__subtitle {
@@ -3556,6 +3615,111 @@ a {
 .lightbox__close:focus {
   outline: 2px solid rgba(255, 255, 255, 0.5);
   outline-offset: 2px;
+}
+
+/* FAQ Section */
+.faq {
+  padding: 80px 0;
+  background: #ffffff;
+}
+
+[data-theme="dark"] .faq {
+  background: var(--surface-color);
+}
+
+.faq__title {
+  margin: 0 0 48px;
+  font-size: clamp(28px, 3.5vw, 40px);
+  font-weight: 700;
+  text-align: center;
+}
+
+.faq__grid {
+  max-width: 800px;
+  margin: 0 auto;
+  display: grid;
+  gap: 16px;
+}
+
+.faq__item {
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--surface-light);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.faq__item.is-active {
+  border-color: var(--primary-color);
+  box-shadow: 0 8px 24px rgba(132, 43, 255, 0.1);
+}
+
+.faq__question {
+  width: 100%;
+  padding: 24px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  transition: color 0.2s ease;
+}
+
+.faq__question::after {
+  content: "+";
+  font-size: 24px;
+  color: var(--primary-color);
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+  margin-left: 16px;
+}
+
+.faq__item.is-active .faq__question::after {
+  transform: rotate(45deg);
+}
+
+.faq__answer-wrapper {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.faq__answer {
+  padding: 0 24px 24px;
+  font-size: 16px;
+  color: var(--muted-color);
+  line-height: 1.6;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.faq__item.is-active .faq__answer {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 640px) {
+  .faq {
+    padding: 56px 0;
+  }
+  
+  .faq__question {
+    padding: 20px;
+    font-size: 17px;
+  }
+  
+  .faq__answer {
+    padding: 0 20px 20px;
+    font-size: 15px;
+  }
 }
 
 /* Hide lightbox on escape key */

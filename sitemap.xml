@@ -1,7 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 	<url>
 		<loc>https://business.akademy21.ru/</loc>
-		<lastmod>2025-08-27T08:30:09+00:00</lastmod>
+		<lastmod>2026-01-24</lastmod>
+		<changefreq>weekly</changefreq>
+		<priority>1.0</priority>
+
+		<image:image>
+			<image:loc>https://business.akademy21.ru/assets/images/tild3031-3465-4530-b832-343736323261__main_pic.jpg</image:loc>
+			<image:title>Ecological transplant hair AF technology main visual</image:title>
+			<image:caption>Start a business with patented hair transplantation technology</image:caption>
+		</image:image>
+
+		<image:image>
+			<image:loc>https://business.akademy21.ru/assets/images/Международная заявка PCT RU2025050133-requ-000006-en-20250513_page-0001.jpg</image:loc>
+			<image:title>International Patent Application PCT RU2025050133</image:title>
+		</image:image>
+
+        <image:image>
+			<image:loc>https://business.akademy21.ru/assets/images/logo AF.svg</image:loc>
+			<image:title>Ecological transplant hair AF Logo</image:title>
+		</image:image>
 	</url>
 </urlset>

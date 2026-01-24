@@ -124,32 +124,71 @@
   let userCountry = "Detecting...";
 
   const fetchUserCountry = async () => {
-    // Try several APIs for reliability
+    console.log(`[Country Detection] Starting detection. Protocol: ${window.location.protocol}, Origin: ${window.location.origin || 'null'}`);
+    
+    if (window.location.protocol === 'file:') {
+      console.warn('[Country Detection] Running via file:// protocol. CORS requests to IP APIs will likely fail due to "null" origin.');
+    }
+
+    // Try several APIs for reliability (all must support HTTPS)
     const apis = [
       {
-        url: "https://ip-api.com/json/?lang=en",
-        parse: (data) => data.country ? `${data.country} (${data.countryCode})` : null
+        url: "https://ipapi.co/json/",
+        parse: (data) => data.country_name ? `${data.country_name} (${data.country_code})` : null
+      },
+      {
+        url: "https://freeipapi.com/api/json",
+        parse: (data) => data.countryName ? `${data.countryName} (${data.countryCode})` : null
       },
       {
         url: "https://ipwho.is/",
         parse: (data) => data.country ? `${data.country} (${data.country_code})` : null
+      },
+      {
+        url: "https://www.cloudflare.com/cdn-cgi/trace",
+        parseText: (text) => {
+          const match = text.match(/loc=([A-Z]{2})/);
+          return match ? `Detected via CF (${match[1]})` : null;
+        }
       }
     ];
 
     for (const api of apis) {
       try {
-        const response = await fetch(api.url);
-        const data = await response.json();
-        const country = api.parse(data);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3000);
+
+        console.log(`[Country Detection] Attempting fetch from: ${api.url}`);
+        const response = await fetch(api.url, { signal: controller.signal });
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          console.warn(`[Country Detection] API ${api.url} returned status: ${response.status}`);
+          throw new Error();
+        }
+        
+        let country = null;
+        if (api.parse) {
+          const data = await response.json();
+          country = api.parse(data);
+        } else if (api.parseText) {
+          const text = await response.text();
+          country = api.parseText(text);
+        }
+
         if (country) {
           userCountry = country;
           return;
+          console.log(`[Country Detection] Successfully detected country: ${country}`);
+          return;
         }
-      } catch (error) {
-        console.warn(`Country API failed: ${api.url}`, error);
+      } catch (e) {
+        console.error(`[Country Detection] Failed to fetch from ${api.url}:`, e.message || e);
+        // Silent failure for individual APIs to avoid console clutter
       }
     }
     
+    console.log('[Country Detection] All APIs failed. Using browser language fallback.');
     // Fallback: determine by browser language
     const lang = (navigator.language || "").toLowerCase();
     const countryMap = {
@@ -1335,6 +1374,36 @@
 
   // Initialize lightbox
   initLightbox();
+
+
+  /* ====== FAQ Accordion ====== */
+  const faqItems = document.querySelectorAll(".faq__item");
+  faqItems.forEach((item) => {
+    const question = item.querySelector(".faq__question");
+    const wrapper = item.querySelector(".faq__answer-wrapper");
+    const answer = item.querySelector(".faq__answer");
+
+    question.addEventListener("click", () => {
+      const isActive = item.classList.contains("is-active");
+
+      // Close other items
+      faqItems.forEach((otherItem) => {
+        if (otherItem !== item && otherItem.classList.contains("is-active")) {
+          otherItem.classList.remove("is-active");
+          otherItem.querySelector(".faq__answer-wrapper").style.height = "0";
+        }
+      });
+
+      // Toggle current item
+      if (isActive) {
+        item.classList.remove("is-active");
+        wrapper.style.height = "0";
+      } else {
+        item.classList.add("is-active");
+        wrapper.style.height = `${answer.scrollHeight}px`;
+      }
+    });
+  });
 
   /* ====== Copy Email Functionality ====== */
   const copyEmailLinks = document.querySelectorAll(".js-copy-email");
