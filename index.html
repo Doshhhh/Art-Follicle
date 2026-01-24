@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="assets/css/vendor/fonts-tildasans.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@24.6.0/build/css/intlTelInput.css" />
-    <link rel="stylesheet" href="src/css/style.css" />
+    <link rel="stylesheet" href="src/css/style.css?v=1.2" />
   </head>
   <body>
     <header class="site-header">
@@ -34,8 +34,7 @@
         </nav>
         <div class="header__actions">
           <div class="header__contacts">
-            <a class="contact-link" href="tel:+79154530958">+7 (915) 453 09-58</a>
-            <a class="contact-link" href="mailto:info@akademy21.ru">info@akademy21.ru</a>
+            <a class="contact-link js-copy-email" href="mailto:transplantacademy21@gmail.com">transplantacademy21@gmail.com</a>
           </div>
           <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
             <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -152,7 +151,7 @@
                 alt="Benefit icon"
               />
               <p class="benefit-card__text">
-                No advertising restrictions — you can work across Russia and CIS
+                No advertising restrictions — you can work worldwide
               </p>
             </article>
             <article class="benefit-card reveal-item">
@@ -197,27 +196,25 @@
               </div>
               <div class="calculator-form__counter is-hidden">
                 Step <span class="calculator-form__step-current">1</span> of
-                <span class="calculator-form__step-total">5</span>
+                <span class="calculator-form__step-total">6</span>
               </div>
               <fieldset class="calculator-form__step">
-              <legend class="calculator-form__legend">1. Choose license type</legend>
-              <label class="option-card">
-                <input type="radio" name="license" value="service-marketing" />
-                <span class="option-card__text">License for transplant service with marketing</span>
-              </label>
-              <label class="option-card">
-                <input type="radio" name="license" value="exclusive-marketing" />
-                <span class="option-card__text">
-                  License with exclusive right to provide services with marketing
-                </span>
-              </label>
-              <label class="option-card">
-                <input type="radio" name="license" value="exclusive-training" />
-                <span class="option-card__text">
-                  License with exclusive right to provide services and conduct training
-                </span>
-              </label>
-            </fieldset>
+                <legend class="calculator-form__legend">1. Choose license type</legend>
+                <label class="option-card">
+                  <input type="radio" name="license" value="standard" />
+                  <span class="option-card__text">
+                    <strong>Regular</strong><br />
+                    <small>Standard license without exclusive rights</small>
+                  </span>
+                </label>
+                <label class="option-card">
+                  <input type="radio" name="license" value="exclusive" />
+                  <span class="option-card__text">
+                    <strong>Exclusive</strong><br />
+                    <small>Full license with exclusive regional rights</small>
+                  </span>
+                </label>
+              </fieldset>
             <fieldset class="calculator-form__step">
               <legend class="calculator-form__legend">2. Do you need marketing support?</legend>
               <label class="option-inline">
@@ -261,8 +258,34 @@
                 <strong class="calculator-form__result-value">€0</strong>
               </div>
             </fieldset>
+            <fieldset class="calculator-form__step">
+              <legend class="calculator-form__legend">5. Estimated revenue</legend>
+              <div class="calculator-results">
+                <div class="calculator-results__primary">
+                  <span class="calculator-results__label">Yearly estimated revenue</span>
+                  <strong class="calculator-results__value calculator-results__value--yearly" data-result="year">€0</strong>
+                </div>
+                <div class="calculator-results__grid">
+                  <div class="calculator-results__item">
+                    <span class="calculator-results__label">1 month</span>
+                    <strong class="calculator-results__value" data-result="month">€0</strong>
+                  </div>
+                  <div class="calculator-results__item">
+                    <span class="calculator-results__label">3 months</span>
+                    <strong class="calculator-results__value" data-result="month3">€0</strong>
+                  </div>
+                  <div class="calculator-results__item">
+                    <span class="calculator-results__label">6 months</span>
+                    <strong class="calculator-results__value" data-result="month6">€0</strong>
+                  </div>
+                </div>
+                <p class="calculator-results__disclaimer">
+                  Revenue calculation is approximate and may vary, you can find out the most accurate amount by consulting with us.
+                </p>
+              </div>
+            </fieldset>
             <fieldset class="calculator-form__step calculator-form__contacts">
-              <legend class="calculator-form__legend">5. Get your calculation</legend>
+              <legend class="calculator-form__legend">6. Get a detailed consultation</legend>
               <label class="input-field">
                 <span>Name</span>
                 <input type="text" name="name" placeholder="John" />
@@ -412,7 +435,7 @@
                 </div>
                 <button class="slider__btn slider__btn--next" type="button" aria-label="Next">›</button>
               </div>
-              <p class="technology__work-examples-label">after 1-2 years</p>
+              <p class="technology__work-examples-label">after 1-2 years <span class="technology__af-label">AF</span></p>
             </div>
           </div>
         </div>
@@ -457,8 +480,8 @@
       <section class="cta-section reveal">
         <div class="container">
           <div class="cta-section__content">
-            <h2 class="cta-section__title">Be the first in your region</h2>
-            <p class="cta-section__subtitle">Submit a request and receive a presentation with calculations and detailed terms</p>
+            <h2 class="cta-section__title">Be the first in your city</h2>
+            <p class="cta-section__subtitle">Submit a request and receive a <span class="semi-bold">free</span> detailed consultation</p>
             <form class="cta-section__form">
               <input type="text" name="name" placeholder="Name" />
               <input type="tel" id="cta-phone" name="phone" />
@@ -474,19 +497,19 @@
           <div class="patent__content">
             <h2 class="patent__title">Become a leader with our patented method</h2>
             <p class="patent__text">
-              We offer a unique hair transplant method, patented under number AF № 2 839 302, 
+              We offer a unique hair transplant method, patented under number AF № 2 839 302,
               with international application PCT/RU2025/50 133.
             </p>
             <p class="patent__text">
-              The method is in demand in countries such as China, Europe, America, Russia, Turkey, Georgia, 
+              The method is in demand in countries such as China, Europe, America, Russia, Turkey, Georgia,
               Israel, UAE, and CIS.
             </p>
             <p class="patent__text">
-              The patent includes the latest technologies and secrets that will help you become an exclusive 
+              The patent includes the latest technologies and secrets that will help you become an exclusive
               specialist and stand out in the market.
             </p>
             <p class="patent__text">
-              A licensing agreement provides the right to legally use this invention, improve 
+              A licensing agreement provides the right to legally use this invention, improve
               service quality, increase competitiveness, and legally increase income.
             </p>
             <div class="patent__flags">
@@ -507,69 +530,86 @@
               <span class="fi fi-uz" title="Uzbekistan"></span>
             </div>
           </div>
-          <figure class="patent__media reveal-item">
-            <img
-              src="assets/images/tild3466-6334-4236-a166-366530623562___4pdf_-_page_1_of_1.jpg"
-              alt="Patent"
-              loading="lazy"
-            />
-          </figure>
+          <div class="patent__media reveal-item">
+            <div class="patent__slider-wrapper">
+              <div class="patent__slider-main">
+                <button class="slider__btn slider__btn--prev" type="button" aria-label="Previous">‹</button>
+                <div class="slider slider--stacked">
+                  <div class="slider__track patent__gallery">
+                    <img
+                      src="assets/images/Международная заявка PCT RU2025050133-requ-000006-en-20250513_page-0001.jpg"
+                      alt="International Application PCT RU2025050133 - Page 1"
+                      loading="lazy"
+                    />
+                    <img
+                      src="assets/images/Международная заявка PCT RU2025050133-requ-000006-en-20250513_page-0002.jpg"
+                      alt="International Application PCT RU2025050133 - Page 2"
+                      loading="lazy"
+                    />
+                    <img
+                      src="assets/images/Международная заявка PCT RU2025050133-requ-000006-en-20250513_page-0003.jpg"
+                      alt="International Application PCT RU2025050133 - Page 3"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+                <button class="slider__btn slider__btn--next" type="button" aria-label="Next">›</button>
+              </div>
+              <p class="patent__slider-label">International Application PCT/RU2025/50 133</p>
+            </div>
+          </div>
         </div>
       </section>
       <section class="tariffs reveal" id="tarifs">
         <div class="container">
           <div class="tariffs__header">
-            <h2 class="tariffs__title">Pricing</h2>
-            <p class="tariffs__subtitle">choose a package and submit the request</p>
+            <h2 class="tariffs__title">What's included in the offer</h2>
+            <p class="tariffs__subtitle">Complete package for your business success</p>
           </div>
+
+          <div class="tariffs__common reveal">
+            <ul class="tariffs__features-list">
+              <li>Licensing right for 1 year</li>
+              <li>Marketing support from 3 months</li>
+              <li>Possibility of signing an exclusive contract</li>
+              <li>Individual training for doctors and nurses (5 days)</li>
+              <li>1-day tour of Shenzhen resort city</li>
+              <li>Individual eyebrow design lesson</li>
+              <li>Post-training curator support and consultations</li>
+              <li>Trichotransplantologist certificate</li>
+              <li>5-star hotel accommodation with breakfast</li>
+              <li>State-recognized diploma</li>
+              <li>Airport meeting and transfer</li>
+              <li>24/7 personal translator</li>
+              <li>Europass for international employment</li>
+              <li>Professional methodological manual</li>
+              <li>Cosmetic equipment/apparatus</li>
+              <li>Practice on 2 models</li>
+              <li>Chinese certificate</li>
+            </ul>
+          </div>
+
           <div class="tariffs__grid">
             <article class="tariff-card reveal-item">
+              <div class="tariff-card__discount">
+                <span class="discount-value">-50%</span>
+                <span class="discount-text">cheaper</span>
+              </div>
               <div class="tariff-card__header">
-                <h3>Economy</h3>
+                <h3>Regular</h3>
               </div>
-              <p class="tariff-card__subtitle">Package includes:</p>
-              <ul>
-                <li>license rights for 1 year;</li>
-                <li>3 months of marketing support for transplant services;</li>
-                <li>AF transplant technology training in China.</li>
-              </ul>
+              <p class="tariff-card__subtitle">Standard license without exclusive rights</p>
               <div class="tariff-card__footer">
-                <a class="button button--outline" href="#formpatenteconom">Submit Request</a>
-              </div>
-            </article>
-            <article class="tariff-card tariff-card--highlight reveal-item">
-              <div class="tariff-card__header">
-                <h3>Standard</h3>
-                <span class="tariff-card__badge">- 30%</span>
-              </div>
-              <p class="tariff-card__subtitle">Package includes:</p>
-              <ul>
-                <li>license rights for 1 year;</li>
-                <li>3 months of marketing support for transplant services;</li>
-                <li>AF transplant technology training in China with hotel accommodation and personal escort;</li>
-                <li>professional training manual in English;</li>
-                <li>Chinese certificate.</li>
-              </ul>
-              <div class="tariff-card__footer">
-                <a class="button button--primary" href="#formpatentstandart">Submit Request</a>
+                <a class="button button--primary" href="#formpatentregular">Submit Request</a>
               </div>
             </article>
             <article class="tariff-card reveal-item">
               <div class="tariff-card__header">
-                <h3>VIP</h3>
-                <span class="tariff-card__badge">- 50%</span>
+                <h3>Exclusive</h3>
               </div>
-              <p class="tariff-card__subtitle">Package includes:</p>
-              <ul>
-                <li>license rights for 1 year;</li>
-                <li>3 months of marketing support for transplant services;</li>
-                <li>AF transplant technology training in China with hotel accommodation and personal escort;</li>
-                <li>opportunity to obtain Europass for working abroad;</li>
-                <li>issuance of "Trichologist" or "Cosmetologist" diplomas;</li>
-                <li>individual support with a curator and consultations after training.</li>
-              </ul>
+              <p class="tariff-card__subtitle">Full license with exclusive regional rights</p>
               <div class="tariff-card__footer">
-                <a class="button button--outline" href="#formpatenvip">Submit Request</a>
+                <a class="button button--outline" href="#formpatentexclusive">Submit Request</a>
               </div>
             </article>
           </div>
@@ -619,7 +659,7 @@
       <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="formpatent-title">
         <button class="modal__close" type="button" data-close aria-label="Close window">×</button>
         <h3 class="modal__title" id="formpatent-title">
-          Submit a request and receive a presentation with calculations and detailed terms
+          Submit a request and receive a <span class="semi-bold">free</span> detailed consultation
         </h3>
         <form class="modal__form">
           <input type="text" name="name" placeholder="Name" />
@@ -630,14 +670,14 @@
         </form>
       </div>
     </div>
-    <div class="modal" id="formpatenteconom" aria-hidden="true">
+    <div class="modal" id="formpatentregular" aria-hidden="true">
       <div class="modal__overlay" data-close></div>
-      <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="formpatenteconom-title">
+      <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="formpatentregular-title">
         <button class="modal__close" type="button" data-close aria-label="Close window">×</button>
-        <h3 class="modal__title" id="formpatenteconom-title">
-          Submit a request and receive a presentation with calculations and detailed terms
+        <h3 class="modal__title" id="formpatentregular-title">
+          Submit a request and receive a <span class="semi-bold">free</span> detailed consultation
         </h3>
-        <p class="modal__subtitle">Economy Plan</p>
+        <p class="modal__subtitle">Regular License</p>
         <form class="modal__form">
           <label class="input-field">
             <span>Name</span>
@@ -659,43 +699,14 @@
         </form>
       </div>
     </div>
-    <div class="modal" id="formpatentstandart" aria-hidden="true">
+    <div class="modal" id="formpatentexclusive" aria-hidden="true">
       <div class="modal__overlay" data-close></div>
-      <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="formpatentstandart-title">
+      <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="formpatentexclusive-title">
         <button class="modal__close" type="button" data-close aria-label="Close window">×</button>
-        <h3 class="modal__title" id="formpatentstandart-title">
-          Submit a request and receive a presentation with calculations and detailed terms
+        <h3 class="modal__title" id="formpatentexclusive-title">
+          Submit a request and receive a <span class="semi-bold">free</span> detailed consultation
         </h3>
-        <p class="modal__subtitle">Standard Plan</p>
-        <form class="modal__form">
-          <label class="input-field">
-            <span>Name</span>
-            <input type="text" name="name" placeholder="Name" />
-          </label>
-          <label class="input-field">
-            <span>Phone number</span>
-            <input type="tel" name="phone" placeholder="+1 (000) 000-0000" />
-          </label>
-          <label class="input-field">
-            <span>Telegram <small>(optional)</small></span>
-            <input type="text" name="telegram" placeholder="@username" />
-          </label>
-          <label class="input-field">
-            <span>Instagram <small>(optional)</small></span>
-            <input type="text" name="instagram" placeholder="@username" />
-          </label>
-          <button class="button button--primary" type="submit">Submit</button>
-        </form>
-      </div>
-    </div>
-    <div class="modal" id="formpatenvip" aria-hidden="true">
-      <div class="modal__overlay" data-close></div>
-      <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="formpatenvip-title">
-        <button class="modal__close" type="button" data-close aria-label="Close window">×</button>
-        <h3 class="modal__title" id="formpatenvip-title">
-          Submit a request and receive a presentation with calculations and detailed terms
-        </h3>
-        <p class="modal__subtitle">VIP Plan</p>
+        <p class="modal__subtitle">Exclusive License</p>
         <form class="modal__form">
           <label class="input-field">
             <span>Name</span>
@@ -720,8 +731,7 @@
     <footer class="site-footer">
       <div class="container">
         <div class="footer__contacts-row">
-          <a href="tel:+79154530958">+7 (915) 453 09-58</a>
-          <a href="mailto:info@akademy21.ru">info@akademy21.ru</a>
+          <a class="js-copy-email" href="mailto:transplantacademy21@gmail.com">transplantacademy21@gmail.com</a>
         </div>
         <div class="footer__main">
           <div class="footer__brand">
@@ -730,6 +740,7 @@
               alt="Ecological transplant hair AF"
               class="footer__logo"
             />
+            <span class="logo__mark">®</span>
           </div>
           <nav class="footer__nav">
             <a href="#benefits">Benefits</a>
@@ -749,7 +760,27 @@
         </div>
       </div>
     </footer>
+    
+    <!-- Lightbox for fullscreen photo viewing -->
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+      <div class="lightbox__overlay" data-close></div>
+      <div class="lightbox__content" role="dialog" aria-modal="true" aria-label="Photo viewer">
+        <button class="lightbox__close" type="button" data-close aria-label="Close">×</button>
+        <button class="lightbox__btn lightbox__btn--prev" type="button" aria-label="Previous photo">‹</button>
+        <div class="lightbox__image-container">
+          <img class="lightbox__image" src="" alt="" />
+        </div>
+        <button class="lightbox__btn lightbox__btn--next" type="button" aria-label="Next photo">›</button>
+        <div class="lightbox__counter">
+          <span class="lightbox__current">1</span>
+          <span class="lightbox__separator">/</span>
+          <span class="lightbox__total">3</span>
+        </div>
+      </div>
+    </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@24.6.0/build/js/intlTelInput.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <script src="src/js/app.js" defer></script>
   </body>
 </html>

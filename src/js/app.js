@@ -1,21 +1,26 @@
 (() => {
-  const body = document.body;
+  // Wait for DOM to be fully loaded before initializing
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+  } else {
+    initApp();
+  }
+
+  function initApp() {
+    const body = document.body;
 
   /* ====== Theme Switcher ====== */
   const themeToggle = document.querySelector(".theme-toggle");
   const themeToggleMobile = document.querySelector(".theme-toggle--mobile");
   const html = document.documentElement;
 
-  // Check for saved theme preference or default to system preference
+  // Check for saved theme preference or default to light theme
   const getPreferredTheme = () => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) {
       return savedTheme;
     }
-    // Check system preference
-    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      return "dark";
-    }
+    // Always default to light theme
     return "light";
   };
 
@@ -79,8 +84,8 @@
     window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
       // Only auto-switch if user hasn't manually set a preference
       if (!localStorage.getItem("theme")) {
-        const newTheme = e.matches ? "dark" : "light";
-        applyTheme(newTheme);
+        // Always keep light theme as default, don't auto-switch to dark
+        applyTheme("light");
       }
     });
   }
@@ -513,10 +518,240 @@
     revealItems.forEach((item) => observer.observe(item));
   }
 
+  /* ====== Lightbox Gallery ====== */
+  const initLightbox = () => {
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImage = document.querySelector(".lightbox__image");
+    const lightboxClose = document.querySelector(".lightbox__close");
+    const lightboxPrev = document.querySelector(".lightbox__btn--prev");
+    const lightboxNext = document.querySelector(".lightbox__btn--next");
+    const lightboxCurrent = document.querySelector(".lightbox__current");
+    const lightboxTotal = document.querySelector(".lightbox__total");
+    const lightboxOverlay = document.querySelector(".lightbox__overlay");
+    const lightboxCounter = document.querySelector(".lightbox__counter"); // Get counter wrapper
+
+    // Store current gallery images
+    let currentGalleryImages = [];
+    let currentIndex = 0;
+
+    // Function to collect images from a specific slider wrapper
+    const collectImagesFromSlider = (sliderWrapper) => {
+      const images = [];
+      // Look for images in the slider track (which contains the actual gallery)
+      const sliderTrack = sliderWrapper.querySelector(".slider__track");
+      if (!sliderTrack) return images;
+
+      // Iterate over immediate children of the slider track
+      const trackItems = Array.from(sliderTrack.children);
+
+      trackItems.forEach((item) => {
+        if (item.tagName === "IMG") {
+          images.push({
+            src: item.src,
+            alt: item.alt,
+            type: "image",
+            element: item
+          });
+        } else if (item.tagName === "VIDEO") {
+          // Assuming video elements have a source tag inside
+          const videoSource = item.querySelector("source");
+          // Only push video if a source is available
+          if (videoSource && videoSource.src) {
+            images.push({
+              src: videoSource.src,
+              alt: item.getAttribute("aria-label") || "Video",
+              type: "video",
+              element: item
+            });
+          }
+        }
+      });
+
+      return images;
+    };
+
+    // Function to open lightbox with specific slider wrapper
+    const openLightbox = (sliderWrapper, clickedImage) => {
+      // Collect images from this specific slider
+      currentGalleryImages = collectImagesFromSlider(sliderWrapper);
+      
+      if (currentGalleryImages.length === 0) return;
+
+      // Check if navigation is needed and show/hide arrows
+      const isNavNeeded = currentGalleryImages.length > 1;
+      
+      if (lightboxPrev) lightboxPrev.style.display = isNavNeeded ? "flex" : "none";
+      if (lightboxNext) lightboxNext.style.display = isNavNeeded ? "flex" : "none";
+      
+      // Find the index of the clicked image
+      const clickedIndex = currentGalleryImages.findIndex(item => item.element === clickedImage);
+      currentIndex = clickedIndex >= 0 ? clickedIndex : 0;
+
+      // Update lightbox content
+      updateLightboxContent();
+
+      // Show lightbox
+      lightbox.setAttribute("aria-hidden", "false");
+      lightbox.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+
+      // Log for debugging
+      console.log(`Lightbox opened with ${currentGalleryImages.length} images from clicked gallery`);
+    };
+
+    // Function to update lightbox content
+    const updateLightboxContent = () => {
+      if (currentGalleryImages.length === 0) return;
+
+      const item = currentGalleryImages[currentIndex];
+
+      if (item.type === "image") {
+        lightboxImage.src = item.src;
+        lightboxImage.alt = item.alt;
+        lightboxImage.style.display = "block";
+      } else if (item.type === "video") {
+        lightboxImage.src = item.src;
+        lightboxImage.alt = item.alt;
+        lightboxImage.style.display = "block";
+      }
+
+      // Show/hide counter and update values
+      const isCounterNeeded = currentGalleryImages.length > 1;
+      if (lightboxCounter) lightboxCounter.style.display = isCounterNeeded ? "flex" : "none";
+      
+      lightboxCurrent.textContent = currentIndex + 1;
+      lightboxTotal.textContent = currentGalleryImages.length;
+    };
+
+    // Function to close lightbox
+    const closeLightbox = () => {
+      lightbox.setAttribute("aria-hidden", "true");
+      lightbox.classList.remove("is-open");
+      document.body.style.overflow = "";
+      currentGalleryImages = [];
+    };
+
+    // Function to show next image
+    const showNext = () => {
+      if (currentGalleryImages.length === 0) return;
+      currentIndex = (currentIndex + 1) % currentGalleryImages.length;
+      updateLightboxContent();
+    };
+
+    // Function to show previous image
+    const showPrev = () => {
+      if (currentGalleryImages.length === 0) return;
+      currentIndex = (currentIndex - 1 + currentGalleryImages.length) % currentGalleryImages.length;
+      updateLightboxContent();
+    };
+
+    // Add click handlers to gallery images
+    const addImageClickHandlers = () => {
+      // Remove existing handlers to avoid duplicates
+      document.querySelectorAll(".technology__gallery img, .patent__gallery img").forEach((img) => {
+        img.removeEventListener("click", handleImageClick);
+      });
+
+      // Add new handlers
+      document.querySelectorAll(".technology__gallery img, .patent__gallery img").forEach((img) => {
+        img.addEventListener("click", () => handleImageClick(img));
+      });
+    };
+
+    // Handle image click - find which slider wrapper it belongs to
+    const handleImageClick = (clickedImg) => {
+      // Find the slider wrapper that contains this image
+      let sliderWrapper = clickedImg.closest(".technology__slider-wrapper");
+      
+      // If not found in technology slider, try patent slider
+      if (!sliderWrapper) {
+        sliderWrapper = clickedImg.closest(".patent__slider-wrapper");
+      }
+
+      if (sliderWrapper) {
+        openLightbox(sliderWrapper, clickedImg);
+      }
+    };
+
+    // Keyboard navigation
+    const handleKeyDown = (e) => {
+      if (!lightbox.classList.contains("is-open")) return;
+
+      switch (e.key) {
+        case "Escape":
+          closeLightbox();
+          break;
+        case "ArrowRight":
+          showNext();
+          break;
+        case "ArrowLeft":
+          showPrev();
+          break;
+      }
+    };
+
+    // Touch/swipe support
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    const handleTouchStart = (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    };
+
+    const handleTouchEnd = (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const diff = touchStartX - touchEndX;
+
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) {
+          // Swipe left - next image
+          showNext();
+        } else {
+          // Swipe right - previous image
+          showPrev();
+        }
+      }
+    };
+
+    // Event listeners
+    if (lightboxClose) {
+      lightboxClose.addEventListener("click", closeLightbox);
+    }
+
+    if (lightboxOverlay) {
+      lightboxOverlay.addEventListener("click", closeLightbox);
+    }
+
+    if (lightboxPrev) {
+      lightboxPrev.addEventListener("click", showPrev);
+    }
+
+    if (lightboxNext) {
+      lightboxNext.addEventListener("click", showNext);
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    // Add touch event listeners to lightbox image
+    if (lightboxImage) {
+      lightboxImage.addEventListener("touchstart", handleTouchStart, { passive: true });
+      lightboxImage.addEventListener("touchend", handleTouchEnd, { passive: true });
+    }
+
+    // Initialize click handlers
+    addImageClickHandlers();
+
+    // Log initialization for debugging
+    console.log("Lightbox initialized - will show images from clicked gallery only");
+
+    // Expose functions for testing/debugging
+    window.closeLightbox = closeLightbox;
+  };
+
   /* ====== Slider ====== */
   document.querySelectorAll(".slider").forEach((slider) => {
     const track = slider.querySelector(".slider__track");
-    const wrapper = slider.closest(".technology__slider-wrapper") || slider.parentElement;
+    const wrapper = slider.closest(".technology__slider-wrapper") || slider.closest(".patent__slider-wrapper") || slider.parentElement;
     const prev = wrapper?.querySelector(".slider__btn--prev") || slider.querySelector(".slider__btn--prev");
     const next = wrapper?.querySelector(".slider__btn--next") || slider.querySelector(".slider__btn--next");
     const videos = Array.from(slider.querySelectorAll("video"));
@@ -548,6 +783,8 @@
 
     const goToSlide = (index, autoPlayNext = false) => {
       const wasFirstVideoPlaying = currentIndex === 0 && videos[0] && isVideoPlaying(videos[0]);
+      const isStacked = slider.classList.contains('slider--stacked');
+      const oldIndex = currentIndex;
       
       pauseAllVideos();
       
@@ -560,7 +797,11 @@
         currentIndex = index;
       }
       
-      track.style.transform = `translateX(-${currentIndex * 100}%)`;
+      if (isStacked) {
+        updateStackedSlides(slider, currentIndex, oldIndex);
+      } else {
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+      }
 
       // Auto-play video 2 if switching from video 1 while it was playing (only once)
       if (autoPlayNext && wasFirstVideoPlaying && currentIndex === 1 && videos[1] && !autoPlayUsed) {
@@ -571,13 +812,47 @@
       }
     };
 
-    prev?.addEventListener("click", () => {
-      goToSlide(currentIndex - 1, false);
-    });
+    // Function to handle stacked slides animation
+    const updateStackedSlides = (sliderEl, activeIdx, prevIdx) => {
+      const slideItems = Array.from(sliderEl.querySelectorAll(".slider__track > *"));
+      
+      slideItems.forEach((item, i) => {
+        // Clear all states first
+        item.classList.remove('is-active', 'is-next', 'is-next-next', 'is-leaving');
+        
+        if (i === activeIdx) {
+          item.classList.add('is-active');
+        } else if (i === prevIdx && prevIdx !== activeIdx) {
+          // Slide that is moving away
+          item.classList.add('is-leaving');
+        } else if (i === (activeIdx + 1) % totalItems) {
+          // Peek 1
+          item.classList.add('is-next');
+        } else if (i === (activeIdx + 2) % totalItems) {
+          // Peek 2
+          item.classList.add('is-next-next');
+        }
+      });
+    };
 
-    next?.addEventListener("click", () => {
-      goToSlide(currentIndex + 1, true);
-    });
+    // Add click event listeners to buttons with proper error handling
+    if (prev) {
+      prev.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log("Prev button clicked - slider:", slider);
+        goToSlide(currentIndex - 1, false);
+      });
+    }
+
+    if (next) {
+      next.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log("Next button clicked - slider:", slider);
+        goToSlide(currentIndex + 1, true);
+      });
+    }
 
     // Touch/swipe support
     let touchStartX = 0;
@@ -605,6 +880,14 @@
     // Initialize
     track.style.transition = "transform 0.4s ease";
     goToSlide(0);
+    
+    // Log initialization for debugging
+    console.log("Slider initialized:", {
+      hasPrev: !!prev,
+      hasNext: !!next,
+      wrapper: wrapper?.className,
+      items: totalItems
+    });
   });
 
   /* ====== Form Validation (additional helpers) ====== */
@@ -704,14 +987,16 @@
       const marketing = calcForm.querySelector('input[name="marketing"]:checked')?.value === "yes" ? "Yes" : "No";
       const workdays = calcForm.querySelector('input[name="workdays"]')?.value || "1";
       const services = calcForm.querySelector('input[name="services"]')?.value || "1";
-      const result = document.querySelector(".calculator-form__result-value")?.textContent || "";
+      const resultYear = document.querySelector('.calculator-results__value--yearly')?.textContent || "";
+      const resultMonth = document.querySelector('.calculator-results__value[data-result="month"]')?.textContent || "";
       
       const formSource = `Profitability Calculator
-📊 License: ${license}
-📢 Marketing: ${marketing}
-📅 Working days: ${workdays}
-🔧 Services per day: ${services}
-💰 Estimate: ${result}`;
+ 📊 License: ${license}
+ 📢 Marketing: ${marketing}
+ 📅 Working days: ${workdays}
+ 🔧 Services per day: ${services}
+ 💰 Monthly Estimate: ${resultMonth}
+ 💰 Yearly Estimate: ${resultYear}`;
       
       await handleFormSubmit(calcForm, formSource);
     });
@@ -765,51 +1050,50 @@
     const formatMoney = (value) => new Intl.NumberFormat("en-US").format(value);
 
     const updateCalculatorResult = () => {
-      if (!resultBox || !resultValue) return;
-      
       const license = calculatorForm.querySelector('input[name="license"]:checked')?.value;
       const marketing = calculatorForm.querySelector('input[name="marketing"]:checked')?.value;
       const workdays = Number(calculatorForm.querySelector('input[name="workdays"]')?.value || 1);
       const services = Number(calculatorForm.querySelector('input[name="services"]')?.value || 1);
 
-      // Show result only when we have enough data
-      if (!license || !marketing) {
-        resultBox.classList.add("is-hidden");
-        return;
+      // Current Step 4 result box (optional if still kept, but user wanted to replace section 5)
+      if (resultBox && resultValue) {
+        if (!license || !marketing) {
+          resultBox.classList.add("is-hidden");
+        } else {
+          let revenue = 0;
+          switch (license) {
+            case "standard": revenue = 3000 * workdays * services; break;
+            case "exclusive": revenue = 3500 * workdays * services; break;
+            default: revenue = 2500 * workdays * services;
+          }
+          if (marketing === "no") revenue = Math.round(revenue * 0.7);
+          
+          resultValue.textContent = `€${formatMoney(revenue)}`;
+          resultBox.classList.remove("is-hidden");
+        }
       }
 
-      let revenue = 0;
-      
-      // Calculate based on license type (in EUR)
-      switch (license) {
-        case "service-marketing":
-          // Base price per procedure * workdays * procedures per day
-          revenue = 1500 * workdays * services;
-          break;
-        case "exclusive-marketing":
-          // Higher price for exclusive rights
-          revenue = 2500 * workdays * services;
-          break;
-        case "exclusive-training":
-          // Highest price for exclusive + training
-          revenue = 3500 * workdays * services;
-          break;
-        default:
-          revenue = 2000 * workdays * services;
+      // Populate Step 5 detailed results
+      const resultsContainer = calculatorForm.querySelector('.calculator-results');
+      if (resultsContainer && license && marketing) {
+        let revenue = 0;
+        switch (license) {
+          case "standard": revenue = 3000 * workdays * services; break;
+          case "exclusive": revenue = 3500 * workdays * services; break;
+          default: revenue = 2500 * workdays * services;
+        }
+        if (marketing === "no") revenue = Math.round(revenue * 0.7);
+
+        const resMonth = resultsContainer.querySelector('[data-result="month"]');
+        const resMonth3 = resultsContainer.querySelector('[data-result="month3"]');
+        const resMonth6 = resultsContainer.querySelector('[data-result="month6"]');
+        const resYear = resultsContainer.querySelector('[data-result="year"]');
+
+        if (resMonth) resMonth.textContent = `€${formatMoney(revenue)}`;
+        if (resMonth3) resMonth3.textContent = `€${formatMoney(revenue * 3)}`;
+        if (resMonth6) resMonth6.textContent = `€${formatMoney(revenue * 6)}`;
+        if (resYear) resYear.textContent = `€${formatMoney(revenue * 12)}`;
       }
-
-      // Marketing support affects revenue
-      if (marketing === "no") {
-        // Without marketing, reduce revenue by 30%
-        revenue = Math.round(revenue * 0.7);
-      }
-
-      // Animate value update
-      resultValue.classList.add("is-updating");
-      setTimeout(() => resultValue.classList.remove("is-updating"), 400);
-
-      resultValue.textContent = `€${formatMoney(revenue)}`;
-      resultBox.classList.remove("is-hidden");
     };
 
     const showStep = (index, direction = 1) => {
@@ -825,6 +1109,17 @@
         step.classList.toggle("is-active", i === index);
       });
       
+      // Trigger confetti on Step 5 (index 5 if intro is 0)
+      // Since steps are: 0:Intro, 1:License, 2:Marketing, 3:Days, 4:Services, 5:Results, 6:Contacts
+      if (index === 5 && typeof confetti === 'function') {
+        confetti({
+          particleCount: 150,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#842bff', '#a855f7', '#ffffff']
+        });
+      }
+
       currentStep = index;
 
       const isIntro = index === introIndex;
@@ -837,6 +1132,13 @@
       if (nextBtn) {
         nextBtn.toggleAttribute("disabled", isLast);
         nextBtn.style.display = isLast || isIntro ? "none" : "inline-flex";
+        
+        // Change text on Step 5 next button
+        if (index === 5) {
+          nextBtn.textContent = "Get Detailed Calculation";
+        } else {
+          nextBtn.textContent = "Next";
+        }
       }
       if (submitBtn) {
         submitBtn.style.display = isLast ? "inline-flex" : "none";
@@ -878,6 +1180,9 @@
         if (!valid) validateRadioGroup(calculatorForm, radios[0].name);
         return valid;
       }
+
+      // Step 5 (Results) has no inputs, always valid
+      if (index === 5) return true;
 
       // Range inputs are always valid (have default value)
       const ranges = inputs.filter((input) => input.type === "range");
@@ -1026,5 +1331,40 @@
       initialCountry: "us",
     });
     calcPhone.iti = iti;
+  }
+
+  // Initialize lightbox
+  initLightbox();
+
+  /* ====== Copy Email Functionality ====== */
+  const copyEmailLinks = document.querySelectorAll(".js-copy-email");
+  copyEmailLinks.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const email = link.textContent.trim();
+      
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(email).then(() => {
+          showNotification("Email copied to clipboard", "success");
+        }).catch((err) => {
+          console.error("Could not copy text: ", err);
+          showNotification("Failed to copy email", "error");
+        });
+      } else {
+        // Fallback for older browsers
+        const textArea = document.createElement("textarea");
+        textArea.value = email;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          showNotification("Email copied to clipboard", "success");
+        } catch (err) {
+          showNotification("Failed to copy email", "error");
+        }
+        document.body.removeChild(textArea);
+      }
+    });
+  });
   }
 })();
