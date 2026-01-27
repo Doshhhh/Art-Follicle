@@ -2,13 +2,15 @@
   font-family: 'TildaSans';
   font-style: normal;
   font-weight: 250 1000;
+  font-display: swap;
   src: url('https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2') format('woff2-variations'),
-       url('https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff') format('woff-variations');     
+       url('https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff') format('woff-variations');
 }
 @font-face {
   font-family: 'TildaSans';
   font-style: normal;
   font-weight: 300;
+  font-display: swap;
   src: url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Light.eot');
   src: url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Light.eot?#iefix') format('embedded-opentype'),
        url('https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2') format('woff2-variations'),
@@ -20,10 +22,11 @@
   font-family: 'TildaSans';
   font-style: normal;
   font-weight: 400;
+  font-display: swap;
   src: url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Regular.eot');
   src: url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Regular.eot?#iefix') format('embedded-opentype'),
        url('https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2') format('woff2-variations'),
-       url('https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff') format('woff-variations'),  
+       url('https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff') format('woff-variations'),
        url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Regular.woff2') format('woff2'),
        url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Regular.woff') format('woff');
 }
@@ -31,10 +34,11 @@
   font-family: 'TildaSans';
   font-style: normal;
   font-weight: 500;
+  font-display: swap;
   src: url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Medium.eot');
   src: url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Medium.eot?#iefix') format('embedded-opentype'),
        url('https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2') format('woff2-variations'),
-       url('https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff') format('woff-variations'),  
+       url('https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff') format('woff-variations'),
        url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Medium.woff2') format('woff2'),
        url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Medium.woff') format('woff');
 }
@@ -42,10 +46,11 @@
   font-family: 'TildaSans';
   font-style: normal;
   font-weight: 600;
+  font-display: swap;
   src: url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Semibold.eot');
   src: url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Semibold.eot?#iefix') format('embedded-opentype'),
        url('https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2') format('woff2-variations'),
-       url('https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff') format('woff-variations'),  
+       url('https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff') format('woff-variations'),
        url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Semibold.woff2') format('woff2'),
        url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Semibold.woff') format('woff');
 }
@@ -53,10 +58,11 @@
   font-family: 'TildaSans';
   font-style: normal;
   font-weight: 700;
+  font-display: swap;
   src: url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Bold.eot');
   src: url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Bold.eot?#iefix') format('embedded-opentype'),
        url('https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2') format('woff2-variations'),
-       url('https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff') format('woff-variations'),  
+       url('https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff') format('woff-variations'),
        url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Bold.woff2') format('woff2'),
        url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Bold.woff') format('woff');
 }
@@ -64,10 +70,11 @@
   font-family: 'TildaSans';
   font-style: normal;
   font-weight: 800;
+  font-display: swap;
   src: url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Extrabold.eot');
   src: url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Extrabold.eot?#iefix') format('embedded-opentype'),
        url('https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2') format('woff2-variations'),
-       url('https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff') format('woff-variations'),  
+       url('https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff') format('woff-variations'),
        url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Extrabold.woff2') format('woff2'),
        url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Extrabold.woff') format('woff');
 }
@@ -75,10 +82,11 @@
   font-family: 'TildaSans';
   font-style: normal;
   font-weight: 900;
+  font-display: swap;
   src: url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Black.eot');
   src: url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Black.eot?#iefix') format('embedded-opentype'),
        url('https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2') format('woff2-variations'),
-       url('https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff') format('woff-variations'),  
+       url('https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff') format('woff-variations'),
        url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Black.woff2') format('woff2'),
        url('https://static.tildacdn.com/fonts/tildasans/TildaSans-Black.woff') format('woff');
 }
