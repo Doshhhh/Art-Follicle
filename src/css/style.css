@@ -2292,40 +2292,7 @@ a {
   padding: 0;
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 16px 40px;
-}
-
-.tariffs__features-list li {
-  position: relative;
-  padding-left: 28px;
-  font-size: 17px;
-  line-height: 1.5;
-  color: var(--text-color);
-}
-
-.tariffs__features-list li::before {
-  content: "✓";
-  position: absolute;
-  left: 0;
-  color: var(--primary-color);
-  font-weight: 700;
-}
-
-.tariffs__common {
-  margin-bottom: 48px;
-  padding: 40px;
-  background: var(--surface-light);
-  border-radius: 24px;
-  border: 1px solid var(--border-color);
-}
-
-.tariffs__features-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
   gap: 16px 40px;
 }
 
@@ -2629,7 +2596,11 @@ a {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 32px;
-  padding: 32px 0;
+  padding: 40px 0;
+}
+
+.footer__main::after {
+  content: "";
 }
 
 .footer__brand {
@@ -2654,31 +2625,22 @@ a {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 12px 24px;
-  font-size: 15px;
-  font-weight: 500;
+  gap: 16px 32px;
+  font-size: 20px;
+  font-weight: 600;
 }
 
 .footer__nav a {
-  color: rgba(255, 255, 255, 0.8);
+  color: #ffffff;
   text-decoration: none;
   transition: color 0.2s ease;
+  white-space: nowrap;
 }
 
 .footer__nav a:hover {
   color: var(--primary-color);
 }
 
-.footer__academy {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.footer__academy-img {
-  height: 56px;
-  width: auto;
-}
 
 /* Modal */
 .modal {
@@ -2851,6 +2813,15 @@ a {
   .tariffs__notes {
     grid-template-columns: 1fr;
   }
+
+  .tariffs__common {
+    padding: 24px 20px;
+    margin-bottom: 32px;
+  }
+
+  .tariffs__features-list {
+    gap: 12px;
+  }
 }
 
 @media (max-width: 900px) {
@@ -2916,6 +2887,10 @@ a {
     grid-template-columns: 1fr;
   }
 
+  .tariffs__common {
+    padding: 32px;
+  }
+
   .tariff-card__footer {
     flex-direction: column;
     align-items: stretch;
@@ -2965,16 +2940,18 @@ a {
   }
 
   .footer__main {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     text-align: center;
     gap: 24px;
+    padding: 32px 0;
+  }
+
+  .footer__main::after {
+    display: none;
   }
 
   .footer__brand {
-    justify-content: center;
-  }
-
-  .footer__academy {
     justify-content: center;
   }
 }
